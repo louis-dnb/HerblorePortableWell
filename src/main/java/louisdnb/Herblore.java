@@ -7,7 +7,9 @@ import net.botwithus.rs3.game.Client;
 import net.botwithus.rs3.game.cs2.ScriptBuilder;
 import net.botwithus.rs3.game.cs2.layouts.Layout;
 import net.botwithus.rs3.game.hud.interfaces.Interfaces;
+import net.botwithus.rs3.game.queries.builders.characters.NpcQuery;
 import net.botwithus.rs3.game.queries.builders.objects.SceneObjectQuery;
+import net.botwithus.rs3.game.scene.entities.characters.npc.Npc;
 import net.botwithus.rs3.game.scene.entities.characters.player.LocalPlayer;
 import net.botwithus.rs3.game.scene.entities.object.SceneObject;
 import net.botwithus.rs3.script.Execution;
@@ -57,14 +59,15 @@ public class Herblore extends LoopingScript {
                 botState = BotState.BANKING;
             }
             case BANKING -> {
-                SceneObject chest = SceneObjectQuery.newQuery().name("Bank chest").results().nearest();
-                if (chest == null) {
-                    println("No bank chest found");
+
+                Npc banker = NpcQuery.newQuery().name("Banker").results().nearest();
+                if (banker == null) {
+                    println("No banker found");
                     return;
                 }
 
-                if (!chest.interact("Load Last Preset from")) {
-                    println("Failed to interact with bank chest");
+                if (!banker.interact("Load Last Preset from")) {
+                    println("Failed to interact with banker");
                     return;
                 }
 
